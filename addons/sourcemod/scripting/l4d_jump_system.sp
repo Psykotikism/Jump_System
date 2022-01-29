@@ -248,6 +248,8 @@ public void OnPluginStart()
 			vSetupDetour(g_esGeneral.g_ddFallingDetour, gdJumpSystem, "JSDetour_CTerrorPlayer::OnFalling");
 
 			vSetupPatch(g_esGeneral.g_mpFallScreamMute, gdJumpSystem, "JSPatch_FallScreamMute");
+
+			delete gdJumpSystem;
 		}
 	}
 
