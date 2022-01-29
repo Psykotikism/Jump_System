@@ -1,5 +1,5 @@
 # Changelog
 
-## Version 1.0 (2022)
+## Version 1.0 (January 28, 2022)
 
 Initial Release.
