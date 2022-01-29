@@ -17,19 +17,18 @@ You should have received a copy of the GNU General Public License along with thi
 ## About
 Provides a system for controlling jumps.
 
-## Features
-1. Automatic bunnyhopping - Hold down your jump button and automatically bunnyhop.
-2. Adjustable jump height - Jump as high as you want (or as high as the map allows you).
-3. Midair dashes - Jump as many times as you want after taking off from the ground.
-4. No fall scream - Mute the game's fall scream while you fall. (This only works if you have a custom jump height or at least 1 midair dash.)
-5. No fall damage - Block fall damage when you land from a high place. (This only works if you have a custom jump height or at least 1 midair dash.)
-6. No death fall camera - Remove death fall camera when you land from a high place (only if the place you land on is a safe zone). [This only works if you have a custom jump height or at least 1 midair dash.]
+## Credits
+**epz/epzminion** - For helping with gamedata information, giving some ideas, and overall invaluable input.
+
+**Chanz** - For the [[ANY] Infinite-Jumping](https://forums.alliedmods.net/showthread.php?t=132391) plugin.
+
+**SourceMod Team** - For continually updating/improving SourceMod.
 
 ## Requirements
 1. `SourceMod 1.11.0.6724` or higher
 2. [`DHooks 2.2.0-detours15` or higher](https://forums.alliedmods.net/showpost.php?p=2588686&postcount=589)
 3. [`Source Scramble`](https://github.com/nosoop/SMExt-SourceScramble)
-4. [`Left 4 DHooks`](https://forums.alliedmods.net/showthread.php?t=204254)
+4. [`Left 4 DHooks`](https://forums.alliedmods.net/showthread.php?t=321696)
 5. Knowledge of installing SourceMod plugins.
 
 ## Notes
@@ -38,21 +37,41 @@ Provides a system for controlling jumps.
 3. If you get errors from SourceMod itself, that is your problem, not mine.
 4. MAKE SURE YOU MEET ALL THE REQUIREMENTS AND FOLLOW THE INSTALLATION GUIDE PROPERLY.
 
-## Installation
-1. Delete files from old versions of the plugin.
-2. Place `l4d_jump_system.txt` in the `addons/sourcemod/gamedata` folder.
-3. Place `l4d_jump_system.smx` in the `addons/sourcemod/plugins` folder.
-4. Place `l4d_jump_system.sp` in the `addons/sourcemod/scripting` folder.
+## Features
+1. Automatic bunnyhopping - Hold down your jump button and automatically bunnyhop.
+2. Adjustable jump height - Jump as high as you want (or as high as the map allows you).
+3. Midair dashes - Jump as many times as you want after taking off from the ground.
+4. No fall scream - Mute the game's fall scream while you fall. (This only works if you have a custom jump height or at least 1 midair dash.)
+5. No fall damage - Block fall damage when you land from a high place. (This only works if you have a custom jump height or at least 1 midair dash.)
+6. No death fall camera - Remove death fall camera when you land from a high place (only if the place you land on is a safe zone). [This only works if you have a custom jump height or at least 1 midair dash.]
 
-## Uninstalling/Upgrading to Newer Versions
-1. Delete `l4d_jump_system.sp` from the `addons/sourcemod/scripting` folder.
-2. Delete `l4d_jump_system.smx` from the `addons/sourcemod/plugins` folder.
-3. Delete `l4d_jump_system.txt` from the `addons/sourcemod/gamedata` folder.
-4. Follow the Installation guide above. (Only for upgrading to newer versions.)
+## Commands
+```
+// Accessible by admins with "z" (Root) flag only.
+sm_bhop - Toggle a player's automatic bunnyhopping.
+- Usage: sm_bhop <-1: OFF|0: Use Cvar|1: ON>
+- Usage: sm_bhop <#userid|name> <-1: OFF|0: Use Cvar|1: ON>
+sm_bunny - Toggle a player's automatic bunnyhopping.
+- Usage: sm_bunny <-1: OFF|0: Use Cvar|1: ON>
+- Usage: sm_bunny <#userid|name> <-1: OFF|0: Use Cvar|1: ON>
+sm_bunnyhop - Toggle a player's automatic bunnyhopping.
+- Usage: sm_bunnyhop <-1: OFF|0: Use Cvar|1: ON>
+- Usage: sm_bunnyhop <#userid|name> <-1: OFF|0: Use Cvar|1: ON>
 
-## Disabling
-1. Move `l4d_jump_system.smx` to the `plugins/disabled` folder.
-2. Unload Jump System by typing `sm plugins unload l4d_jump_system` in the server console.
+sm_jump - Set a player's jump height.
+- Usage: sm_jump <-1.0: OFF|0.0: Use Cvar|1.0-99999.0: ON>
+- Usage: sm_jump <#userid|name> <-1.0: OFF|0.0: Use Cvar|1.0-99999.0: ON>
+sm_height - Set a player's jump height.
+- Usage: sm_height <-1.0: OFF|0.0: Use Cvar|1.0-99999.0: ON>
+- Usage: sm_height <#userid|name> <-1.0: OFF|0.0: Use Cvar|1.0-99999.0: ON>
+
+sm_dash - Set a player's midair dash count.
+- Usage: sm_dash <-1: OFF|0: Use Cvar|1-99999: ON>
+- Usage: sm_dash <#userid|name> <-1: OFF|0: Use Cvar|1-99999: ON>
+sm_midair - Set a player's midair dash count.
+- Usage: sm_midair <-1: OFF|0: Use Cvar|1-99999: ON>
+- Usage: sm_midair <#userid|name> <-1: OFF|0: Use Cvar|1-99999: ON>
+```
 
 ## ConVar Settings
 ```
@@ -146,38 +165,21 @@ l4d_jump_system_jump_height "57.0"
 l4d_jump_system_midair_dashes "2"
 ```
 
-## Commands
-```
-// Accessible by admins with "z" (Root) flag only.
-sm_bhop - Toggle a player's automatic bunnyhopping.
-- Usage: sm_bhop <-1: OFF|0: Use Cvar|1: ON>
-- Usage: sm_bhop <#userid|name> <-1: OFF|0: Use Cvar|1: ON>
-sm_bunny - Toggle a player's automatic bunnyhopping.
-- Usage: sm_bunny <-1: OFF|0: Use Cvar|1: ON>
-- Usage: sm_bunny <#userid|name> <-1: OFF|0: Use Cvar|1: ON>
-sm_bunnyhop - Toggle a player's automatic bunnyhopping.
-- Usage: sm_bunnyhop <-1: OFF|0: Use Cvar|1: ON>
-- Usage: sm_bunnyhop <#userid|name> <-1: OFF|0: Use Cvar|1: ON>
+## Installation
+1. Delete files from old versions of the plugin.
+2. Place `l4d_jump_system.txt` in the `addons/sourcemod/gamedata` folder.
+3. Place `l4d_jump_system.smx` in the `addons/sourcemod/plugins` folder.
+4. Place `l4d_jump_system.sp` in the `addons/sourcemod/scripting` folder.
 
-sm_jump - Set a player's jump height.
-- Usage: sm_jump <-1.0: OFF|0.0: Use Cvar|1.0-99999.0: ON>
-- Usage: sm_jump <#userid|name> <-1.0: OFF|0.0: Use Cvar|1.0-99999.0: ON>
-sm_height - Set a player's jump height.
-- Usage: sm_height <-1.0: OFF|0.0: Use Cvar|1.0-99999.0: ON>
-- Usage: sm_height <#userid|name> <-1.0: OFF|0.0: Use Cvar|1.0-99999.0: ON>
+## Uninstalling/Upgrading to Newer Versions
+1. Delete `l4d_jump_system.sp` from the `addons/sourcemod/scripting` folder.
+2. Delete `l4d_jump_system.smx` from the `addons/sourcemod/plugins` folder.
+3. Delete `l4d_jump_system.txt` from the `addons/sourcemod/gamedata` folder.
+4. Follow the Installation guide above. (Only for upgrading to newer versions.)
 
-sm_dash - Set a player's midair dash count.
-- Usage: sm_dash <-1: OFF|0: Use Cvar|1-99999: ON>
-- Usage: sm_dash <#userid|name> <-1: OFF|0: Use Cvar|1-99999: ON>
-sm_midair - Set a player's midair dash count.
-- Usage: sm_midair <-1: OFF|0: Use Cvar|1-99999: ON>
-- Usage: sm_midair <#userid|name> <-1: OFF|0: Use Cvar|1-99999: ON>
-```
-
-## Credits
-**epz/epzminion** - For helping with gamedata information, giving some ideas, and overall invaluable input.
-
-**SourceMod Team** - For continually updating/improving SourceMod.
+## Disabling
+1. Move `l4d_jump_system.smx` to the `plugins/disabled` folder.
+2. Unload Jump System by typing `sm plugins unload l4d_jump_system` in the server console.
 
 ## 3rd-Party Revisions Notice
 If you would like to share your own revisions of this plugin, please rename the files so that there is no confusion for users.
