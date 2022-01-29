@@ -181,7 +181,7 @@ l4d_jump_system_midair_dashes "2"
 1. Move `l4d_jump_system.smx` to the `plugins/disabled` folder.
 2. Unload Jump System by typing `sm plugins unload l4d_jump_system` in the server console.
 
-## 3rd-Party Revisions Notice
+## Third-Party Revisions Notice
 If you would like to share your own revisions of this plugin, please rename the files so that there is no confusion for users.
 
 ## Final Words
