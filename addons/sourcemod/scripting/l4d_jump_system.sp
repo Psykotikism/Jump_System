@@ -73,6 +73,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 #define JS_TAG4 "\x04[JS]\x04"
 #define JS_TAG5 "\x04[JS]\x05"
 
+// Water levels
 #define JS_WATER_NONE 0 // not in water
 #define JS_WATER_FEET 1 // feet in water
 #define JS_WATER_WAIST 2 // waist in water
@@ -299,7 +300,14 @@ Action cmdJSBunnyHop(int client, int args)
 	client = iGetListenServerHost(client, g_bDedicated);
 	if (!bIsValidClient(client, JS_CHECK_INDEX|JS_CHECK_INGAME|JS_CHECK_FAKECLIENT))
 	{
-		ReplyToCommand(client, "%s You must be in-game to use this command", JS_TAG2);
+		ReplyToCommand(client, "%s You must be in-game to use this command", JS_TAG);
+
+		return Plugin_Handled;
+	}
+
+	if (!g_esGeneral.g_bPluginEnabled)
+	{
+		ReplyToCommand(client, "%s You cannot use this command right now.", JS_TAG2);
 
 		return Plugin_Handled;
 	}
@@ -353,7 +361,14 @@ Action cmdJSJumpHeight(int client, int args)
 	client = iGetListenServerHost(client, g_bDedicated);
 	if (!bIsValidClient(client, JS_CHECK_INDEX|JS_CHECK_INGAME|JS_CHECK_FAKECLIENT))
 	{
-		ReplyToCommand(client, "%s You must be in-game to use this command", JS_TAG2);
+		ReplyToCommand(client, "%s You must be in-game to use this command", JS_TAG);
+
+		return Plugin_Handled;
+	}
+
+	if (!g_esGeneral.g_bPluginEnabled)
+	{
+		ReplyToCommand(client, "%s You cannot use this command right now.", JS_TAG2);
 
 		return Plugin_Handled;
 	}
@@ -410,7 +425,14 @@ Action cmdJSMidairDash(int client, int args)
 	client = iGetListenServerHost(client, g_bDedicated);
 	if (!bIsValidClient(client, JS_CHECK_INDEX|JS_CHECK_INGAME|JS_CHECK_FAKECLIENT))
 	{
-		ReplyToCommand(client, "%s You must be in-game to use this command", JS_TAG2);
+		ReplyToCommand(client, "%s You must be in-game to use this command", JS_TAG);
+
+		return Plugin_Handled;
+	}
+
+	if (!g_esGeneral.g_bPluginEnabled)
+	{
+		ReplyToCommand(client, "%s You cannot use this command right now.", JS_TAG2);
 
 		return Plugin_Handled;
 	}
@@ -1119,6 +1141,11 @@ int iGetListenServerHost(int client, bool dedicated)
 	return client;
 }
 
+int iGetPlayerWaterLevel(int client)
+{
+	return GetEntProp(client, Prop_Send, "m_nWaterLevel");
+}
+
 int iGetRefEHandle(Address entityHandle)
 {
 	if (!entityHandle)
@@ -1128,9 +1155,4 @@ int iGetRefEHandle(Address entityHandle)
 
 	Address adRefHandle = SDKCall(g_esGeneral.g_hSDKGetRefEHandle, entityHandle);
 	return LoadFromAddress(adRefHandle, NumberType_Int32);
-}
-
-int iGetPlayerWaterLevel(int client)
-{
-	return GetEntProp(client, Prop_Send, "m_nWaterLevel");
 }
