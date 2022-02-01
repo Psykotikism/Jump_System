@@ -159,7 +159,7 @@
 				"signature"	"CTerrorPlayer::OnFalling"
 				"linux"
 				{
-					"offset"	"397" // start at E8 and patch 5 bytes with NOPs (0x90)
+					"offset"	"1018" // start at E8 and patch 5 bytes with NOPs (0x90)
 					"verify"	"\xE8"
 					"patch"		"\x90\x90\x90\x90\x90"
 				}
