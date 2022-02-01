@@ -17,7 +17,7 @@
 #pragma semicolon 1
 #pragma newdecls required
 
-#define JS_VERSION "1.0"
+#define JS_VERSION "1.1"
 
 public Plugin myinfo =
 {
