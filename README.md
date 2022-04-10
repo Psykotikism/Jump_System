@@ -22,6 +22,8 @@ Provides a system for controlling jumps.
 
 **Chanz** - For the [[ANY] Infinite-Jumping](https://forums.alliedmods.net/showthread.php?t=132391) plugin.
 
+**kot4404** - For reporting issues.
+
 **SourceMod Team** - For continually updating/improving SourceMod.
 
 ## Requirements
@@ -135,6 +137,13 @@ l4d_jump_system_enabled "1"
 // -
 // Default: ""
 l4d_jump_system_enabled_gamemodes ""
+
+// Forward boost for each jump.
+// -
+// Default: "50.0"
+// Minimum: "0.000000"
+// Maximum: "99999.000000"
+l4d_jump_system_forward_jumpboost "50.0"
 
 // Enable Jump System in these game mode types.
 // 0 OR 15: All game mode types.

@@ -17,7 +17,7 @@
 #pragma semicolon 1
 #pragma newdecls required
 
-#define JS_VERSION "1.1"
+#define JS_VERSION "1.2"
 
 public Plugin myinfo =
 {
@@ -64,7 +64,6 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 #define JS_JUMP_DASHCOOLDOWN 0.15 // time between air dashes
 #define JS_JUMP_DEFAULTHEIGHT 57.0 // default jump height
-#define JS_JUMP_FORWARDBOOST 50.0 // forward boost for each jump
 
 // Chat tags
 #define JS_TAG "[JS]"
@@ -103,6 +102,7 @@ enum struct esGeneral
 	ConVar g_cvJSBlockFallScream;
 	ConVar g_cvJSDisabledGameModes;
 	ConVar g_cvJSEnabledGameModes;
+	ConVar g_cvJSForwardJumpBoost;
 	ConVar g_cvJSGameMode;
 	ConVar g_cvJSGameModeTypes;
 	ConVar g_cvJSJumpHeight;
@@ -156,15 +156,16 @@ public void OnPluginStart()
 	RegAdminCmd("sm_dash", cmdJSMidairDash, ADMFLAG_ROOT, "Set a player's midair dash count.");
 	RegAdminCmd("sm_midair", cmdJSMidairDash, ADMFLAG_ROOT, "Set a player's midair dash count.");
 
-	g_esGeneral.g_cvJSAutoBunnyhop = CreateConVar("l4d_jump_system_auto_bunnyhop", "1", "Enable automatic bunnyhopping.\n0: OFF\n1: ON", _, true, 0.0, true, 1.0);
-	g_esGeneral.g_cvJSBlockDeathCamera = CreateConVar("l4d_jump_system_block_deathcamera", "1", "Block death fall camera.\n0: OFF\n1: ON", _, true, 0.0, true, 1.0);
-	g_esGeneral.g_cvJSBlockFallDamage = CreateConVar("l4d_jump_system_block_falldamage", "1", "Block fall damage.\n0: OFF\n1: ON", _, true, 0.0, true, 1.0);
-	g_esGeneral.g_cvJSBlockFallScream = CreateConVar("l4d_jump_system_block_fallscream", "1", "Block fall scream.\n0: OFF\n1: ON", _, true, 0.0, true, 1.0);
+	g_esGeneral.g_cvJSAutoBunnyhop = CreateConVar("l4d_jump_system_auto_bunnyhop", "1", "Enable automatic bunnyhopping.\n0: OFF\n1: ON", FCVAR_NOTIFY, true, 0.0, true, 1.0);
+	g_esGeneral.g_cvJSBlockDeathCamera = CreateConVar("l4d_jump_system_block_deathcamera", "1", "Block death fall camera.\n0: OFF\n1: ON", FCVAR_NOTIFY, true, 0.0, true, 1.0);
+	g_esGeneral.g_cvJSBlockFallDamage = CreateConVar("l4d_jump_system_block_falldamage", "1", "Block fall damage.\n0: OFF\n1: ON", FCVAR_NOTIFY, true, 0.0, true, 1.0);
+	g_esGeneral.g_cvJSBlockFallScream = CreateConVar("l4d_jump_system_block_fallscream", "1", "Block fall scream.\n0: OFF\n1: ON", FCVAR_NOTIFY, true, 0.0, true, 1.0);
 	g_esGeneral.g_cvJSDisabledGameModes = CreateConVar("l4d_jump_system_disabled_gamemodes", "", "Disable Jump System in these game modes.\nSeparate by commas.\nEmpty: None\nNot empty: Disabled only in these game modes.", FCVAR_NOTIFY);
 	g_esGeneral.g_cvJSEnabledGameModes = CreateConVar("l4d_jump_system_enabled_gamemodes", "", "Enable Jump System in these game modes.\nSeparate by commas.\nEmpty: All\nNot empty: Enabled only in these game modes.", FCVAR_NOTIFY);
+	g_esGeneral.g_cvJSForwardJumpBoost = CreateConVar("l4d_jump_system_forward_jumpboost", "50.0", "Forward boost for each jump.", FCVAR_NOTIFY, true, 0.0, true, 99999.0);
 	g_esGeneral.g_cvJSGameModeTypes = CreateConVar("l4d_jump_system_gamemode_types", "0", "Enable Jump System in these game mode types.\n0 OR 15: All game mode types.\n1: Co-Op modes only.\n2: Versus modes only.\n4: Survival modes only.\n8: Scavenge modes only. (Only available in Left 4 Dead 2.)", FCVAR_NOTIFY, true, 0.0, true, 15.0);
-	g_esGeneral.g_cvJSJumpHeight = CreateConVar("l4d_jump_system_jump_height", "57.0", "Height of each jump. (Game default: 57.0)", _, true, 0.0, true, 99999.0);
-	g_esGeneral.g_cvJSMidairDashes = CreateConVar("l4d_jump_system_midair_dashes", "2", "Number of midair dashes allowed after initial jump.\n0: OFF\n1-99999: Number of midair dashes allowed.", _, true, 0.0, true, 99999.0);
+	g_esGeneral.g_cvJSJumpHeight = CreateConVar("l4d_jump_system_jump_height", "57.0", "Height of each jump. (Game default: 57.0)", FCVAR_NOTIFY, true, 0.0, true, 99999.0);
+	g_esGeneral.g_cvJSMidairDashes = CreateConVar("l4d_jump_system_midair_dashes", "2", "Number of midair dashes allowed after initial jump.\n0: OFF\n1-99999: Number of midair dashes allowed.", FCVAR_NOTIFY, true, 0.0, true, 99999.0);
 	g_esGeneral.g_cvJSPluginEnabled = CreateConVar("l4d_jump_system_enabled", "1", "Enable Jump System.\n0: OFF\n1: ON", FCVAR_NOTIFY, true, 0.0, true, 1.0);
 	CreateConVar("l4d_jump_system_version", JS_VERSION, "Jump System Version", FCVAR_DONTRECORD|FCVAR_NOTIFY|FCVAR_REPLICATED|FCVAR_SPONLY);
 	AutoExecConfig(true, "l4d_jump_system");
@@ -498,12 +499,16 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 			if (iHop == 1)
 			{
 				vPushPlayer(client, {-90.0, 0.0, 0.0}, ((flGetJumpHeight(client, true) + 100.0) * 2.0));
-			}
 
-			float flAngles[3];
-			GetClientEyeAngles(client, flAngles);
-			flAngles[0] = 0.0;
-			vPushPlayer(client, flAngles, JS_JUMP_FORWARDBOOST);
+				float flBoost = g_esGeneral.g_cvJSForwardJumpBoost.FloatValue;
+				if (flBoost > 0.0)
+				{
+					float flAngles[3];
+					GetClientEyeAngles(client, flAngles);
+					flAngles[0] = 0.0;
+					vPushPlayer(client, flAngles, flBoost);
+				}
+			}
 		}
 
 		if (g_esPlayer[client].g_iMidairDashesCount > 0)
@@ -603,7 +608,7 @@ MRESReturn mreBaseEntityGetGroundEntityPre(int pThis, DHookReturn hReturn)
 		}
 
 		int iLimit = (g_esPlayer[pThis].g_iMidairDashesLimit != 0) ? g_esPlayer[pThis].g_iMidairDashesLimit : g_esGeneral.g_cvJSMidairDashes.IntValue;
-		if (-1 < g_esPlayer[pThis].g_iMidairDashesCount < iLimit)
+		if (-1 < g_esPlayer[pThis].g_iMidairDashesCount < (iLimit + 1))
 		{
 			g_esPlayer[pThis].g_flLastJumpTime = flCurrentTime;
 			g_esPlayer[pThis].g_iMidairDashesCount++;
