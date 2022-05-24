@@ -113,6 +113,15 @@ l4d_jump_system_block_falldamage "1"
 // Maximum: "1.000000"
 l4d_jump_system_block_fallscream "1"
 
+// Enable more control for bunnyhopping.
+// 0: OFF
+// 1: ON
+// -
+// Default: "0"
+// Minimum: "0.000000"
+// Maximum: "1.000000"
+l4d_jump_system_bunnyhop_mode "0"
+
 // Disable Jump System in these game modes.
 // Separate by commas.
 // Empty: None

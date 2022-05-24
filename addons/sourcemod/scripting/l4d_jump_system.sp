@@ -17,7 +17,7 @@
 #pragma semicolon 1
 #pragma newdecls required
 
-#define JS_VERSION "1.2"
+#define JS_VERSION "1.3"
 
 public Plugin myinfo =
 {
@@ -100,6 +100,7 @@ enum struct esGeneral
 	ConVar g_cvJSBlockDeathCamera;
 	ConVar g_cvJSBlockFallDamage;
 	ConVar g_cvJSBlockFallScream;
+	ConVar g_cvJSBunnyhopMode;
 	ConVar g_cvJSDisabledGameModes;
 	ConVar g_cvJSEnabledGameModes;
 	ConVar g_cvJSForwardJumpBoost;
@@ -160,6 +161,7 @@ public void OnPluginStart()
 	g_esGeneral.g_cvJSBlockDeathCamera = CreateConVar("l4d_jump_system_block_deathcamera", "1", "Block death fall camera.\n0: OFF\n1: ON", FCVAR_NOTIFY, true, 0.0, true, 1.0);
 	g_esGeneral.g_cvJSBlockFallDamage = CreateConVar("l4d_jump_system_block_falldamage", "1", "Block fall damage.\n0: OFF\n1: ON", FCVAR_NOTIFY, true, 0.0, true, 1.0);
 	g_esGeneral.g_cvJSBlockFallScream = CreateConVar("l4d_jump_system_block_fallscream", "1", "Block fall scream.\n0: OFF\n1: ON", FCVAR_NOTIFY, true, 0.0, true, 1.0);
+	g_esGeneral.g_cvJSBunnyhopMode = CreateConVar("l4d_jump_system_bunnyhop_mode", "0", "Enable more control for bunnyhopping.\n0: OFF\n1: ON", FCVAR_NOTIFY, true, 0.0, true, 1.0);
 	g_esGeneral.g_cvJSDisabledGameModes = CreateConVar("l4d_jump_system_disabled_gamemodes", "", "Disable Jump System in these game modes.\nSeparate by commas.\nEmpty: None\nNot empty: Disabled only in these game modes.", FCVAR_NOTIFY);
 	g_esGeneral.g_cvJSEnabledGameModes = CreateConVar("l4d_jump_system_enabled_gamemodes", "", "Enable Jump System in these game modes.\nSeparate by commas.\nEmpty: All\nNot empty: Enabled only in these game modes.", FCVAR_NOTIFY);
 	g_esGeneral.g_cvJSForwardJumpBoost = CreateConVar("l4d_jump_system_forward_jumpboost", "50.0", "Forward boost for each jump.", FCVAR_NOTIFY, true, 0.0, true, 99999.0);
@@ -506,6 +508,25 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 					float flAngles[3];
 					GetClientEyeAngles(client, flAngles);
 					flAngles[0] = 0.0;
+
+					if (g_esGeneral.g_cvJSBunnyhopMode.BoolValue)
+					{
+						if (buttons & IN_BACK)
+						{
+							flAngles[1] += 180.0;
+						}
+
+						if (buttons & IN_MOVELEFT)
+						{
+							flAngles[1] += 90.0;
+						}
+
+						if (buttons & IN_MOVERIGHT)
+						{
+							flAngles[1] += -90.0;
+						}
+					}
+
 					vPushPlayer(client, flAngles, flBoost);
 				}
 			}
