@@ -5,7 +5,7 @@
 ### Changes
 
 #### General
-- Added more control for bunnyhopping with `WASD` keys.
+- Added more control for bunnyhopping with movement keys.
 - Added the `l4d_jump_system_bunnyhop_mode` convar.
 
 ## Version 1.2 (April 10, 2022)

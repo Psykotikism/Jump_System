@@ -5,6 +5,7 @@
 
 ## License
 > The following license is placed inside the source code of the plugin.
+
 Jump System: a L4D/L4D2 SourceMod Plugin
 Copyright (C) 2022  Alfred "Psyk0tik" Llagas
 
@@ -24,7 +25,7 @@ Provides a system for controlling jumps.
 
 **kot4404** - For reporting issues.
 
-**SourceMod Team** - For continually updating/improving SourceMod.
+**SourceMod Team** - For continually updating/improving `SourceMod`.
 
 ## Requirements
 1. `SourceMod 1.11.0.6724` or higher
@@ -197,7 +198,7 @@ l4d_jump_system_midair_dashes "2"
 
 ## Disabling
 1. Move `l4d_jump_system.smx` to the `plugins/disabled` folder.
-2. Unload Jump System by typing `sm plugins unload l4d_jump_system` in the server console.
+2. Unload `Jump System` by typing `sm plugins unload l4d_jump_system` in the server console.
 
 ## Third-Party Revisions Notice
 If you would like to share your own revisions of this plugin, please rename the files so that there is no confusion for users.
