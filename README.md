@@ -31,7 +31,7 @@ Provides a system for controlling jumps.
 1. `SourceMod 1.11.0.6724` or higher
 2. [`DHooks 2.2.0-detours15` or higher](https://forums.alliedmods.net/showpost.php?p=2588686&postcount=589)
 3. [`Source Scramble`](https://github.com/nosoop/SMExt-SourceScramble)
-4. [`Left 4 DHooks`](https://forums.alliedmods.net/showthread.php?t=321696)
+4. [`Left 4 DHooks Direct`](https://forums.alliedmods.net/showthread.php?t=321696)
 5. Knowledge of installing SourceMod plugins.
 
 ## Notes
